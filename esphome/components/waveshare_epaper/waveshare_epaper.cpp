@@ -165,7 +165,10 @@ bool WaveshareEPaperBase::wait_until_idle_() {
 }
 void WaveshareEPaperBase::update() {
   this->do_update_();
-  this->display();
+  if (this->needs_update_) {
+    this->display();
+    this->needs_update_ = false;
+  }
 }
 void WaveshareEPaper::fill(Color color) {
   // flip logic
@@ -3035,6 +3038,7 @@ void HOT WaveshareEPaper2P13InDKE::display() {
   bool partial = this->at_update_ != 0;
   this->at_update_ = (this->at_update_ + 1) % this->full_update_every_;
 
+  partial = random_uint32() % 100 >= 10; // every 10th update will be full
   if (partial) {
     ESP_LOGI(TAG, "Performing partial e-paper update.");
   } else {

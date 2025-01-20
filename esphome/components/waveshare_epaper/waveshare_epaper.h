@@ -16,6 +16,7 @@ class WaveshareEPaperBase : public display::DisplayBuffer,
   void set_reset_pin(GPIOPin *reset) { this->reset_pin_ = reset; }
   void set_busy_pin(GPIOPin *busy) { this->busy_pin_ = busy; }
   void set_reset_duration(uint32_t reset_duration) { this->reset_duration_ = reset_duration; }
+  void set_needs_update(bool needs_update) { this->needs_update_ = needs_update; }
 
   void command(uint8_t value);
   void data(uint8_t value);
@@ -62,6 +63,7 @@ class WaveshareEPaperBase : public display::DisplayBuffer,
   GPIOPin *dc_pin_;
   GPIOPin *busy_pin_{nullptr};
   virtual uint32_t idle_timeout_() { return 1000u; }  // NOLINT(readability-identifier-naming)
+  bool needs_update_{false};
 };
 
 class WaveshareEPaper : public WaveshareEPaperBase {
